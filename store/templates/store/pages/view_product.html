@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'store/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'store/css/all.min.css' %}">
+    <script type="text/javascript">
+        var user = '{{request.user}}'
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getToken('csrftoken');
+
+        function getCookie(name){
+            var cookieArr= document.cookie.split(";");
+            for(var i = 0; i < cookieArr.length; i++){
+                var cookiepair = cookieArr[i].split("=");
+                if (name == cookiepair[0].trim()) {
+                    return decodeURIComponent(cookiepair[1]) 
+                }
+            }
+            return null
+        }
+        var cart = JSON.parse(getCookie('cart'))
+        if(cart == undefined) {
+            cart = {}
+            console.log('carrito creado:', cart)
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+        }
+    </script>
+    <title>Tecno Store</title>
+</head>
+<body>
+    {% include 'store/parts/navbar.html' %}
+        {% block content %}
+        {% endblock content %}
+    {% include 'store/parts/footer.html' %}
+    <script src="{% static 'store/js/cart.js' %}"></script>
+    <script src="{% static 'store/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'store/js/jQuery-3.6.3.js' %}"></script>
+    <script src="{% static 'store/js/all.min.js' %}"></script>
+    <script>
+        {% for product in products %}
+            $(".category{{product.category.id}}").click(function(){ 
+                console.log($("{{product.category.name}}"));
+                $(".productHide").hide();
+                $(".product{{product.category.id}}").show();
+            }); 
+        {% endfor %}
+        {% for category in categories %}
+        $(".category{{category.id}}").click(function(){ 
+            if('{{category.name}}' == 'Todas'){
+                $(".productHide").hide();
+                $(".Todas").show();
+            }
+        });
+        {% endfor %}
+    </script>
+</body>
+</html>

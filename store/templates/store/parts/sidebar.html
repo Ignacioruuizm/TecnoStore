@@ -1,0 +1,33 @@
+{% load static %}
+
+<div class="flex-shrink-0 p-3 h-100 sticky-top border-end" style="background-color: #f6f6f6 !important;">
+    <span class="fs-5 fw-semibold"> Categorias</span>
+    <ul class="list-unstyled ps-0">
+        {% for category in categories %}
+        <li class="mb-1 category{{category.id}}">
+            <i class="fa-light fa-laptop-mobile"></i>
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#category-collapse-{{ category.id }}" aria-expanded="false">
+                {{ category.name }}
+            </button>
+        </li>
+        {% endfor %}
+        <li class="border-top my-3"></li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+                Cuenta
+            </button>
+            <div class="collapse" id="account-collapse">
+                {% if user.is_authenticated %}
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                  <li><a style="text-decoration: none;" href="{% url 'logout' %}" class="link-dark rounded">Cerrar sesión</a></li>
+                </ul>
+                {% else %}
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a style="text-decoration: none;" href="{% url 'login' %}" class="link-dark rounded">Iniciar sesión</a></li>
+                    <li><a style="text-decoration: none;" href="{% url 'register' %}" class="link-dark rounded">Registrarse</a></li>
+                </ul>
+                {% endif %}
+            </div>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,39 @@
+{% load static %}
+  
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand mx-2" href="{% url 'store' %}">Tecno Store</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <form method="GET" action="{% url 'store' %}" class="d-flex ms-auto mt-2 mt-lg-0" role="search">
+        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" name="search_name">
+        <button class="btn btn-outline-success" type="submit">Buscar</button>
+      </form>
+      <div class="form-inline my-2 my-lg-0 mx-2">
+        {% if user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="btn btn-warning">Salir</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-warning">Iniciar sesión</a>
+          <a href="{% url 'register' %}" class="btn btn-warning">Registrarse</a>
+        {% endif %}
+        <a href="{% url 'cart' %}" class="mx-3">
+          <i id="cart-icon" class="fa-solid fa-cart-shopping position-relative fs-5">
+            <span id="cart-total" class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-1">{{cartItems}}</span>
+          </i>
+        </a>
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'profile' user.id %}" class="mx-3">
+          {% if user.customer.photo %}
+            <img src="{{user.customer.photo.url}}" alt="" class="rounded-circle" style="width: 30px;">
+          {% else %}
+            <i class="fa-solid fa-user" style="color: #0d6efd; font-weight: 900;"></i>
+          {% endif %}
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
